@@ -1,0 +1,28 @@
+html, body{
+    margin: 0;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+body{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-rows: 1fr;
+}
+
+h1{
+    text-align: center;
+}
+
+.container{
+    width: 500px;
+    height: 500px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.cell{
+    min-width: 7rem;
+    min-height: 7rem;
+    font-size: 36px;
+}
