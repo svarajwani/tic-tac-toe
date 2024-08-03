@@ -7,6 +7,20 @@
     <link rel="stylesheet" href="styles.css">
 </head>
     <body>
+        <dialog class="name-dialog">
+            <form action="" class="name-form">
+                <div class="form-row">
+                    <label for="player-one-name">Player One Name:</label>
+                    <input type="text" id="player-one-name">
+                </div>
+
+                <div class="form-row">
+                    <label for="player-two-name">Player Two Name:</label>
+                    <input type="text" id="player-two-name">
+                </div>
+                <button type="submit" class="submit-modal">Done</button>
+            </form>
+        </dialog>
         <h1>Tic-Tac-Toe</h1>
         <h2 class="currentTurn"></h2>
         <div class="container">
@@ -20,6 +34,7 @@
             <button class="cell" data-row="2" data-column="1"></button>
             <button class="cell" data-row="2" data-column="2"></button>
         </div>
+        <button class="reset">New Game</button>
         <script src="tictactoe.js"></script>
     </body>
 </html>

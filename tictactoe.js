@@ -1,17 +1,19 @@
 function Gameboard (){
     const rows = 3;
     const columns = 3;
-    const board = [];
+    let board = [];
     let playStopped = false;
 
     //create 2d array for tictactoe board
     const resetBoard = () => {
+        board = [];
         for(let i = 0; i < rows; i++){
             board[i] = [];
             for (let j = 0; j < columns; j++){
                 board[i][j] = Cell();
             }
         }
+        console.log(board);
     }
 
 
@@ -119,8 +121,8 @@ function Cell(){
     };
 }
 
-function GameController(playerOne = "Player One", playerTwo = "Player Two"){
-    const gameboard = Gameboard();
+function GameController(playerOne, playerTwo){
+    let gameboard = Gameboard();
 
     const players  = [
         {
@@ -138,6 +140,11 @@ function GameController(playerOne = "Player One", playerTwo = "Player Two"){
 
     const getActivePlayer = () => activePlayer;
 
+    const setPlayerNames = (playerOneName, playerTwoName) => {
+        players[0].name = playerOneName;
+        players[1].name = playerTwoName;
+    }
+
     const switchActivePlayer = () => {
         if (activePlayer === players[0]){
             activePlayer = players[1]
@@ -146,64 +153,13 @@ function GameController(playerOne = "Player One", playerTwo = "Player Two"){
         }
     }
 
-    const printNewTurn = () => {
-        gameboard.printBoard()
-        console.log(`${getActivePlayer().name}'s turn.`)
-    }
-
-    // const checkForWin = () => {
-    //     const board = gameboard.getBoard().map((row) => row.map((cell) => cell.getCellValue()));
-    //     for (let i = 0; i < 3; i++){
-    //         currentRow = board[i];
-    //         if (currentRow[0] !== 0 && 
-    //             currentRow[0] === currentRow[1] && 
-    //             currentRow[1] === currentRow[2]){
-    //             return true;
-    //         }
-    //     }
-
-    //     for (let i = 0; i < 3; i++){
-    //         if (board[0][i] !== 0 && 
-    //             board[0][i] === board[1][i] && 
-    //             board[1][i] === board [2][i]){
-    //             return true;
-    //         }
-    //     }
-
-    //     if(board[0][0] !== 0 && 
-    //         board[0][0] === board[1][1] && 
-    //         board[1][1] === board[2][2]){
-    //         return true;
-    //     }
-
-    //     if(board[0][2] !== 0 &&
-    //         board[0][2] === board[1][1] && 
-    //         board[1][1] === board[2][0]){
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
-    // const checkForTie = () => {
-    //     const boardWithCellVals = gameboard.getBoard().map((row) => row.map((cell) => cell.getCellValue()));
-    //     for(let i = 0; i < 3; i++){
-    //         for(let j = 0; j < 3; j++){
-    //             if (boardWithCellVals[i][j] === 0){
-    //                 return false;
-    //             }
-    //         }
-    //     }
-    //     return true;
-    // }
-
     const playTurn = (row, column) => {
 
         if (!gameboard.checkMoveValidity(row, column)){
-            console.log("Invalid move. Please try again.")
-            printNewTurn();
+            //console.log("Invalid move. Please try again.")
+            //printNewTurn();
             return;
         }
-        console.log(`Placing ${getActivePlayer().name}'s token in cell (${row}, ${column})`);
         gameboard.playerMove(row, column, getActivePlayer());
 
         if(gameboard.checkForWin()){
@@ -214,25 +170,33 @@ function GameController(playerOne = "Player One", playerTwo = "Player Two"){
         }
 
         switchActivePlayer();
-        printNewTurn();
     }
 
-    printNewTurn();
+    const resetGame = () => {
+        gameboard.resetBoard();
+        console.log(gameboard.getBoard().map((row) => row.map((cell) => cell.getCellValue())));
+        activePlayer = players[0];
+    }
 
     return {
         getActivePlayer, 
+        setPlayerNames,
         playTurn,
         getBoard: gameboard.getBoard,
         checkForWin: gameboard.checkForWin,
         checkForTie: gameboard.checkForTie,
+        resetGame,
     }
 }
 
 function ScreenController(){
-    game = GameController("player1", "player2");
+    let game = GameController("Player One", "Player Two");
     const currentTurn = document.querySelector(".currentTurn");
     const container = document.querySelector(".container");
+    const reset =  document.querySelector(".reset");
     const playStopped = false;
+
+    
 
     const updateScreen = () => {
         container.textContent = "";
@@ -274,6 +238,21 @@ function ScreenController(){
         }
     }
 
+    const getNamesFromUser = () => {
+        const modal = document.querySelector(".name-dialog");
+        const nameForm = document.querySelector(".name-form");
+        modal.showModal();
+
+        nameForm.addEventListener("submit", (event) => {
+            const playerOneName = document.querySelector("#player-one-name").value;
+            const playerTwoName = document.querySelector("#player-two-name").value;
+            game.setPlayerNames(playerOneName, playerTwoName);
+            updateScreen();
+            event.preventDefault();
+            modal.close();
+        })
+    }
+
     const clickHandler = (container) => {
         const clickedRow = container.target.dataset.row;
         const clickedColumn = container.target.dataset.column;
@@ -286,8 +265,15 @@ function ScreenController(){
         updateScreen();
     }
 
-    container.addEventListener("click", clickHandler)
+    const resetHandler = () => {
+        game.resetGame();
+        getNamesFromUser();
+    }
+
+    reset.addEventListener("click", resetHandler);
+    container.addEventListener("click", clickHandler);
     updateScreen();
+    getNamesFromUser();
 }
 
 const screen = ScreenController();

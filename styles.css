@@ -15,14 +15,67 @@ h1{
 }
 
 .container{
-    width: 500px;
-    height: 500px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    justify-content: center;
+    align-content: center;
 }
 
 .cell{
-    min-width: 7rem;
-    min-height: 7rem;
-    font-size: 36px;
+    color: aliceblue;
+    width: 9rem;
+    height: 9rem;
+    font-size: 6rem;
+    background-color: cadetblue;
+}
+
+.reset {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    width: fit-content;
+    grid-column: 1 / -1;
+    justify-self: center;
+
+    margin: 2rem;
+    padding: 1rem;
+    background-color: rgba(95, 158, 160);
+    font-size: 2rem;
+    color:aliceblue;
+}
+
+.cell, .reset {
+    border: solid 3px #000000;
+    border-radius: 1rem;
+}
+
+.cell:active {
+    background: rgb(105, 176, 178);;
+    width: 8.8rem;
+    height: 8.8rem;
+    justify-self: center;
+    align-self: center;
+}
+
+.name-dialog{
+    border: 3px solid black;
+    border-radius: 1rem;
+}
+
+.name-dialog::backdrop{
+    background-color: #d7d7d7;
+    opacity: 0.8;
+}
+
+.name-form {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    gap: 8px;
+}
+
+.submit-modal {
+    background-color: rgba(95, 158, 160);
+    font-size: 1rem;
+    color:aliceblue;
+    border-radius: 0.3rem;
 }
